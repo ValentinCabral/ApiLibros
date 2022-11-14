@@ -1,0 +1,8 @@
+      <modules>
+        <remove name="UrlRoutingModule-4.0" />
+        <add name="UrlRoutingModule-4.0" type="System.Web.Routing.UrlRoutingModule" preCondition="" />
+      </modules>
+
+
+
+dotnet ef migrations script -o script.sql -i
