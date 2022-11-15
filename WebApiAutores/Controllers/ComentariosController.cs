@@ -80,6 +80,7 @@ namespace WebApiAutores.Controllers
 
             var comentarios = await context.Comentarios
                 .Where(x => x.UsuarioId == usuarioId)
+                .Where(x => x.LibroId == libroId)
                 .ToListAsync();
 
             if (comentarios is null)

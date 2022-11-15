@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WebApiAutores.DTOs;
 using WebApiAutores.Entidades;
 
 namespace WebApiAutores.Controllers
@@ -42,7 +43,7 @@ namespace WebApiAutores.Controllers
             var usuarioConPassword = await userManager.CreateAsync(usuario, credencialesUsuario.Password); // CreateAsync crea un nuevo usuario.
 
             // Si el usuario se creo con éxito
-            return usuarioConPassword.Succeeded ? ConstruirToken(credencialesUsuario) : BadRequest(usuarioConPassword.Errors);
+            return usuarioConPassword.Succeeded ? await ConstruirToken(credencialesUsuario) : BadRequest(usuarioConPassword.Errors);
 
         }
 
@@ -52,8 +53,32 @@ namespace WebApiAutores.Controllers
             // ME LOGUEO
             var logueoUsuario = await signInManager.PasswordSignInAsync(credencialesUsuario.Email, credencialesUsuario.Password, isPersistent: false, lockoutOnFailure: false);
 
-            return logueoUsuario.Succeeded ? ConstruirToken(credencialesUsuario) : BadRequest("Login incorrecto");
+            return logueoUsuario.Succeeded ? await ConstruirToken(credencialesUsuario) : BadRequest("Login incorrecto");
 
+        }
+
+        [HttpPost("HacerAdmin")]
+        public async Task<ActionResult> HacerAdmin(EditarAdminDTO editarAdminDTO)
+        {
+            // Traigo el usuario que tenga ese Email
+            var usuario = await userManager.FindByEmailAsync(editarAdminDTO.Email);
+            // userManagaer no me trae el username automaticamente, por lo que lo asigno (el username es el email)
+            usuario.UserName = usuario.Email;
+
+            // Agrego el claim al usuario
+            await userManager.AddClaimAsync(usuario, new Claim("esAdmin", "1")); // El valor del claim puede ser cualquier cosa
+            return NoContent();
+
+        }
+
+        [HttpPost("RemoverAdmin")]
+        public async Task<ActionResult> RemoverAdmin(EditarAdminDTO editarAdminDTO)
+        {
+            var usuario = await userManager.FindByEmailAsync(editarAdminDTO.Email);
+            usuario.UserName = usuario.Email;
+
+            await userManager.RemoveClaimAsync(usuario, new Claim("esAdmin", "1"));
+            return NoContent();
         }
 
         /// <summary>
@@ -61,13 +86,22 @@ namespace WebApiAutores.Controllers
         /// </summary>
         /// <param name="credencialesUsuario">Email y password</param>
         /// <returns>Token y fecha de expiración</returns>
-        private RespuestaAutenticacion ConstruirToken(CredencialesUsuario credencialesUsuario)
+        private async Task<RespuestaAutenticacion> ConstruirToken(CredencialesUsuario credencialesUsuario)
         {
             // Construyo un listado de claims, es decir, información del usuario en la que confiamos(Información no importante)
             var claims = new List<Claim>()
             {
                 new Claim("email", credencialesUsuario.Email)
             };
+
+            // Traigo el usuario con ese email para poder agregar los claims que ya tenia (en caso de que se admin)
+            var usuario = await userManager.FindByEmailAsync(credencialesUsuario.Email);
+
+            // Traigo los claims que ya tenia el usuario
+            var claimsDB = await userManager.GetClaimsAsync(usuario);
+
+            // Agrego a los claims que cree los claims que ya tenia
+            claims.AddRange(claimsDB);
 
             // Traigo la llave desde appsettings
             var llave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["LlaveJWT"]));

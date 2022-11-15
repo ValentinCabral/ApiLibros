@@ -87,6 +87,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Limpio el mapeo que se hace en los tipos de los claims
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
+
+// Configuro la autorizacion basada en claims para los administradores
+builder.Services.AddAuthorization(opciones =>
+{
+    // Agrego la politica EsAdmin que requiere un claim llamado esAdmin
+    opciones.AddPolicy("EsAdmin", politica => politica.RequireClaim("esAdmin"));
+
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
