@@ -2,12 +2,11 @@
 
 namespace WebApiAutores.DTOs
 {
-    public class ComentarioDTO
+    public class ComentarioUsuariosLogueadosDTO
     {
         public int Id { get; set; }
 
         [Required]
         public string Contenido { get; set; }
-        public string Usuario { get; set; }
     }
 }

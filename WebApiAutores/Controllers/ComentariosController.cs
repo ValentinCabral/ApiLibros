@@ -39,7 +39,9 @@ namespace WebApiAutores.Controllers
             if (!existeLibro) // No existe ningún libro con ese Id
                 return NotFound();
 
-            var comentarios = await context.Comentarios.Where(x => x.LibroId == libroId).ToListAsync(); // Lista de todos los comentarios que tengan el LibroId
+            var comentarios = await context.Comentarios
+                .Include(x => x.Usuario)
+                .Where(x => x.LibroId == libroId).ToListAsync(); // Lista de todos los comentarios que tengan el LibroId
 
             return mapper.Map<List<ComentarioDTO>>(comentarios);
 
@@ -62,7 +64,10 @@ namespace WebApiAutores.Controllers
             if (!existeLibro)
                 return NotFound(); //No existe ningún libro con ese Id
 
-            var comentario = await context.Comentarios.FirstOrDefaultAsync(x => x.Id == id);
+            var comentario = await context.Comentarios
+                .Include(x => x.Usuario)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (comentario is null)
                 return NotFound(); // No existe ningún comentario con ese Id
 
@@ -76,7 +81,7 @@ namespace WebApiAutores.Controllers
         /// <param name="libroId">id del libro que tiene los comentarios</param>
         /// <returns>Lista de comentarios del usuario en ese libro</returns>
         [HttpGet("/Usuario/{libroId:int}")]
-        public async Task<ActionResult<List<ComentarioDTO>>> GetPorUsuario([FromRoute] int libroId)
+        public async Task<ActionResult<List<ComentarioUsuariosLogueadosDTO>>> GetPorUsuario([FromRoute] int libroId)
         {
             var existeLibro = await context.Libros.AnyAsync(x => x.Id == libroId); // Booleano, si existe algún libro con ese Id
 
@@ -99,7 +104,7 @@ namespace WebApiAutores.Controllers
             if (comentarios is null)
                 return NotFound();
 
-            return mapper.Map<List<ComentarioDTO>>(comentarios);
+            return mapper.Map<List<ComentarioUsuariosLogueadosDTO>>(comentarios);
         }
 
 

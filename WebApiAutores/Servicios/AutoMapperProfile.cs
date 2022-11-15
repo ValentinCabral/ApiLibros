@@ -33,6 +33,7 @@ namespace WebApiAutores.Servicios
             // COMENTARIOS
             CreateMap<ComentarioCreacionDTO, Comentario>();
             CreateMap<Comentario, ComentarioDTO>();
+            CreateMap<Comentario, ComentarioUsuariosLogueadosDTO>();
         }
 
         private List<AutorLibro> MapAutoresLibros(LibroCreacionDTO libroCreacionDTO, Libro libro)
