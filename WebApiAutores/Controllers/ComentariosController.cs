@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiAutores.DTOs;
@@ -15,11 +16,13 @@ namespace WebApiAutores.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public ComentariosController(ApplicationDbContext context, IMapper mapper)
+        public ComentariosController(ApplicationDbContext context, IMapper mapper, UserManager<IdentityUser> userManager)
         {
             this.context = context;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -59,6 +62,32 @@ namespace WebApiAutores.Controllers
             return mapper.Map<ComentarioDTO>(comentario);
         }
 
+        [HttpGet("/Usuario/{libroId:int}")]
+        public async Task<ActionResult<List<ComentarioDTO>>> GetPorUsuario([FromRoute] int libroId)
+        {
+            var existeLibro = await context.Libros.AnyAsync(x => x.Id == libroId); // Booleano, si existe algún libro con ese Id
+
+            if (!existeLibro) // No existe ningún libro con ese Id
+                return BadRequest("No existe un libro con ese ID");
+
+            // Traigo los claims de tipo email
+            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+            // Obtengo el valor del claim
+            var email = emailClaim.Value;
+
+            var usuario = await userManager.FindByEmailAsync(email);
+            var usuarioId = usuario.Id;
+
+            var comentarios = await context.Comentarios
+                .Where(x => x.UsuarioId == usuarioId)
+                .ToListAsync();
+
+            if (comentarios is null)
+                return NotFound();
+
+            return mapper.Map<List<ComentarioDTO>>(comentarios);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromRoute] int libroId,[FromBody] ComentarioCreacionDTO comentarioCreacionDTO)
         {
@@ -67,8 +96,17 @@ namespace WebApiAutores.Controllers
             if (!existeLibro) // No existe ningún libro con ese Id
                 return NotFound();
 
+            // Traigo los claims de tipo email
+            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+            // Obtengo el valor del claim
+            var email = emailClaim.Value;
+
+            var usuario = await userManager.FindByEmailAsync(email);
+            var usuarioId = usuario.Id;
+
             var comentario = mapper.Map<Comentario>(comentarioCreacionDTO); // Mapeo desde ComentarioCreacionDTO a Comentario
             comentario.LibroId = libroId; // Guardo el libroId ya que ComentarioCreacionDTO no tenia ese campo
+            comentario.UsuarioId = usuarioId;
 
             context.Comentarios.Add(comentario); // Agrego el comentario
             await context.SaveChangesAsync(); // Persisto y guardo los cambios en la BD
@@ -100,6 +138,31 @@ namespace WebApiAutores.Controllers
             context.Update(comentario); // Actualizo
             await context.SaveChangesAsync(); // Persisto y guardo los cambios en la BD
             return Ok();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete([FromRoute] int libroId, [FromRoute] int id)
+        {
+
+            var existeLibro = await context.Libros.AnyAsync(x => x.Id == libroId);
+            if (!existeLibro) // No existe ningún libro con ese Id
+                return BadRequest("No existe ningún libro con ese Id");
+
+            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+            var email = emailClaim.Value;
+
+            var usuario = await userManager.FindByEmailAsync(email);
+
+            var existeComentario = await context.Comentarios.AnyAsync(x => x.Id == id && x.UsuarioId == usuario.Id);
+
+            if (!existeComentario) // No existe ningún comentario con ese Id
+                return BadRequest("Este usuario no tiene ningún comentario con ese Id");
+
+            context.Remove(new Comentario { Id = id });
+            await context.SaveChangesAsync();
+            return Ok();
+
+
         }
     }
 }
