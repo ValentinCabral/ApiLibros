@@ -53,4 +53,5 @@ C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\obj\Release\net6.0\PubTmp\Out\r
 C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\obj\Release\net6.0\PubTmp\Out\WebApiAutores.xml
 C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\obj\Release\net6.0\PubTmp\Out\WebApiAutores.deps.json

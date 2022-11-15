@@ -31,9 +31,8 @@ namespace WebApiAutores.Controllers
 
         /// <summary>
         /// Este método permite obtener un listado de todos los Autores
-        /// Hace un mapeo a AutorDTO, mostrando solo los id's, nombres, apellidos, y libros.
         /// </summary>
-        /// <param name="ordenarPor">1: Nombre, 2: Apellido, 3: Fecha de nacimiento</param>
+        /// <param name="ordenarPor">1: Nombre, 2: Apellido, 3: Fecha de nacimiento, Otros: Id</param>
         /// <param name="tipoOrden">1: Ascendente, 2: Descendente</param>
         /// <returns>Listado de autores ordenados segun lo especificado</returns>
 
@@ -60,13 +59,15 @@ namespace WebApiAutores.Controllers
             return mapper.Map<List<AutorDTO>>(autores); // Mapeo desde Autor a AutorDTO y retorno
         }
 
+
+        /// <summary>
+        /// Buscar un Autor por su Id
+        /// </summary>
+        /// <param name="id">Id del autor a buscar</param>
+        /// <returns></returns>
         [HttpGet("{id:int}", Name = "ObtenerAutorPorId")]
         [AllowAnonymous]
-        /*
-         * Este método permite buscar un Autor por su id
-         * Si no existe ninguno con el Id recibido retorna un NotFound
-         * Y lo devuelve en forma AutorDTO (Id, Nombre, Apellido y Libros)
-        */
+
         public async Task<ActionResult<AutorDTO>> GetPorId([FromRoute] int id)
         {
             var existe = await context.Autores.AnyAsync(x => x.Id == id);  // Booleano, si existe alguno con el Id == id
@@ -83,13 +84,13 @@ namespace WebApiAutores.Controllers
             return mapper.Map<AutorDTO>(autor); // Mapeo a AutorDto y retorno
         }
 
+        /// <summary>
+        /// Buscar un Autor por su nombre
+        /// </summary>
+        /// <param name="nombre">Nombre que se quiere buscar entre los autores</param>
+        /// <returns></returns>
         [HttpGet("nombre/{nombre}")]
         [AllowAnonymous]
-        /*
-         * Este método permite buscar un Autor por su nombre
-         * Si no existe ninguno con el Nombre recibido retorna NotFound
-         * Lo devuelve en forma de AutorDTO (Id, Nombre, Apellido y Libros)
-        */
         public async Task<ActionResult<List<AutorDTO>>> GetPorNombre([FromRoute] string nombre)
         {
             var listaAutores = await context.Autores
@@ -107,13 +108,13 @@ namespace WebApiAutores.Controllers
             return mapper.Map<List<AutorDTO>>(listaAutores); // Mapeo y retorno
         }
 
+        /// <summary>
+        /// Buscar un Autor por su apellido
+        /// </summary>
+        /// <param name="apellido">Apellido a buscar entre los autores</param>
+        /// <returns></returns>
         [HttpGet("apellido/{apellido}")]
         [AllowAnonymous]
-        /*
-         * Este método permite buscar un Autor por su apellido
-         * Si no existe ninguno con el Apellido recibido retorna NotFound
-         * Lo devuelve en forma de AutorDTO (Id, Nombre y Apellido)
-        */
         public async Task<ActionResult<List<AutorDTO>>> GetPorApellido([FromRoute] string apellido)
         {
             var listaAutores = await context.Autores
@@ -128,13 +129,13 @@ namespace WebApiAutores.Controllers
             return mapper.Map<List<AutorDTO>>(listaAutores); // Mapeo y retorno
         }
 
+        /// <summary>
+        /// Buscar cualquier Autor que contenga el string recibido en su nombre o en su apellido
+        /// </summary>
+        /// <param name="apellidoONombre">Palabra a buscar en el nombre o apellido de los autores</param>
+        /// <returns></returns>
         [HttpGet("buscar/{apellidoONombre}")]
         [AllowAnonymous]
-        /*
-         * Este método permite buscar un autor que contenga el string recibido ya sea en su nombre o en su apellido
-         * Si no existe ninguno con ese string en el Nombre o en el Apellido retorna NotFound
-         * Lo devuelve en forma de AutorDTO (Id, Nombre, Apellido)
-        */
         public async Task<ActionResult<List<AutorDTO>>> GetPorNombreOrApellido ([FromRoute] string apellidoONombre)
         {
             var listaAutoresNombre = await context.Autores
@@ -158,11 +159,12 @@ namespace WebApiAutores.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Permite crear un nuevo Autor
+        /// </summary>
+        /// <param name="autorDTO">Datos del Autor</param>
+        /// <returns></returns>
         [HttpPost]
-        /*
-         * Este método permite crear un nuevo Autor
-         * Lo recibe en forma de AutorCreacionDTO (Nombre, Apellido)
-        */
         public async Task<ActionResult> Post([FromBody] AutorCreacionDTO autorDTO)
         {
             // Si ya existe algún autor con ese nombre y apellido
@@ -177,14 +179,13 @@ namespace WebApiAutores.Controllers
             return CreatedAtRoute("ObtenerAutorPorId", new {id = autor.Id}, autorDTO);
         }
 
+        /// <summary>
+        /// Actualizar los datos de un Autor ya existente
+        /// </summary>
+        /// <param name="autorCreacionDTO">Id, Nombre y Apellido del Autor</param>
+        /// <param name="id">Busca el autor con ese Id y verifica que sea el mismo que se recibe</param>
+        /// <returns></returns>
         [HttpPut("{id:int}")]
-        /*
-         * Este método permite actualizar los datos de un Autor ya existente
-         * Recibe un AutorDTO (Id, Nombre y Apellido) y un Id
-         * En caso de que no exista un autor con ese Id retorna un NotFound
-         * En caso de que exista, pero que el Id del autor recibido no coincida con el id de la URL
-         * Devuelve un BadRequest
-        */
         public async Task<ActionResult> Put([FromBody] AutorCreacionDTO autorCreacionDTO, [FromRoute] int id)
         {
             var existe = await context.Autores.AnyAsync(x => x.Id == id); // Booleano, algún autor con ese Id
@@ -199,10 +200,12 @@ namespace WebApiAutores.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Borrar un Autor
+        /// </summary>
+        /// <param name="id">Id del Autor a borrar</param>
+        /// <returns></returns>
         [HttpDelete("{id:int}")]
-        /*
-         * Este método permite borrar un Autor ya existente dado su Id
-        */
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
             var existe = await context.Autores.AnyAsync(x => x.Id == id); // Booleano, existe algún autor con ese Id
@@ -214,10 +217,13 @@ namespace WebApiAutores.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Actualizar parcialmente,es decir un campo especifico, de un Autor
+        /// </summary>
+        /// <param name="id">Id del Autor a actualizar</param>
+        /// <param name="patchDocument">source del Campo, operacion (replace) y valor a actualizar</param>
+        /// <returns></returns>
         [HttpPatch("{id:int}")]
-        /*
-         * Este método permite actualizar un autor parcialmente (Un campo especifico)
-        */
         public async Task<ActionResult> Patch([FromRoute] int id, JsonPatchDocument<AutorCreacionDTO> patchDocument)
         {
             if (patchDocument is null) // El jsonPatch que me mandan no es valido

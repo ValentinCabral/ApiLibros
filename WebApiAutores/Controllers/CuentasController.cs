@@ -47,6 +47,11 @@ namespace WebApiAutores.Controllers
 
         }
 
+        /// <summary>
+        /// Loguearse en la aplicación
+        /// </summary>
+        /// <param name="credencialesUsuario">Email y Password del usuario</param>
+        /// <returns>Token (JWT) y fecha de expiración del mismo</returns>
         [HttpPost("login")]
         public async Task<ActionResult<RespuestaAutenticacion>> Login(CredencialesUsuario credencialesUsuario)
         {
@@ -57,6 +62,11 @@ namespace WebApiAutores.Controllers
 
         }
 
+        /// <summary>
+        /// Hacer admin a un usuario
+        /// </summary>
+        /// <param name="editarAdminDTO">Email del usuario</param>
+        /// <returns></returns>
         [HttpPost("HacerAdmin")]
         public async Task<ActionResult> HacerAdmin(EditarAdminDTO editarAdminDTO)
         {
@@ -71,6 +81,11 @@ namespace WebApiAutores.Controllers
 
         }
 
+        /// <summary>
+        /// Quitar el Admin a un usuario
+        /// </summary>
+        /// <param name="editarAdminDTO">Email del usuario</param>
+        /// <returns></returns>
         [HttpPost("RemoverAdmin")]
         public async Task<ActionResult> RemoverAdmin(EditarAdminDTO editarAdminDTO)
         {

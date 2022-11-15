@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using WebApiAutores;
@@ -45,6 +46,11 @@ builder.Services.AddSwaggerGen(c =>
             new string[]{}
         }
     });
+
+    // Para la documentación en comentarios
+    var archivoXML = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var rutaXML = Path.Combine(AppContext.BaseDirectory, archivoXML);
+    c.IncludeXmlComments(rutaXML);
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(Program));

@@ -270,3 +270,5 @@ C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\bin\Debug\net6.0\Microsoft.AspN
 C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\bin\Debug\net6.0\WebApiAutores.xml
+C:\Users\vcabral\Desktop\LibrosApi\WebApiAutores\obj\Debug\net6.0\WebApiAutores.xml

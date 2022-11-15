@@ -25,12 +25,13 @@ namespace WebApiAutores.Controllers
             this.userManager = userManager;
         }
 
+        /// <summary>
+        /// Acceder a todos los comentarios de un libro
+        /// </summary>
+        /// <param name="libroId">Id del libro que tiene los comentarios</param>
+        /// <returns>Listado de comentarios</returns>
         [HttpGet]
         [AllowAnonymous]
-        /*
-         * Método que permite acceder a todos los comentarios de un libro
-         * dado el id del libro
-        */
         public async Task<ActionResult<List<ComentarioDTO>>> Get([FromRoute] int libroId)
         {
             var existeLibro = await context.Libros.AnyAsync(x => x.Id == libroId); // Booleano, si existe algún libro con ese Id
@@ -44,6 +45,12 @@ namespace WebApiAutores.Controllers
 
         }
 
+        /// <summary>
+        /// Buscar un comentario por su ID
+        /// </summary>
+        /// <param name="libroId">Id del libro que tiene el comentario</param>
+        /// <param name="id">Id del comentario</param>
+        /// <returns>Un comentario</returns>
         [HttpGet("{id:int}", Name = "ObtenerComentarioPorId")]
         [AllowAnonymous]
         /*
@@ -62,6 +69,12 @@ namespace WebApiAutores.Controllers
             return mapper.Map<ComentarioDTO>(comentario);
         }
 
+
+        /// <summary>
+        /// Buscar los comentarios de un usuario especifico
+        /// </summary>
+        /// <param name="libroId">id del libro que tiene los comentarios</param>
+        /// <returns>Lista de comentarios del usuario en ese libro</returns>
         [HttpGet("/Usuario/{libroId:int}")]
         public async Task<ActionResult<List<ComentarioDTO>>> GetPorUsuario([FromRoute] int libroId)
         {
@@ -89,6 +102,13 @@ namespace WebApiAutores.Controllers
             return mapper.Map<List<ComentarioDTO>>(comentarios);
         }
 
+
+        /// <summary>
+        /// Crear un nuevo comentario
+        /// </summary>
+        /// <param name="libroId">Id del libro que se quiere comentar</param>
+        /// <param name="comentarioCreacionDTO">Texto del comentario</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromRoute] int libroId,[FromBody] ComentarioCreacionDTO comentarioCreacionDTO)
         {
@@ -115,11 +135,14 @@ namespace WebApiAutores.Controllers
         }
 
       
+        /// <summary>
+        /// Actualizar un comentario especifico
+        /// </summary>
+        /// <param name="libroId">Id del libro que tiene el comentario</param>
+        /// <param name="id">Id del comentario</param>
+        /// <param name="comentarioCreacionDTO">Nuevo contenido del comentario</param>
+        /// <returns></returns>
         [HttpPut("{id:int}")]
-        /*
-         * Este método me permite actualizar un comentario
-         * dado su Id
-        */
         public async Task<ActionResult> Put([FromRoute] int libroId, [FromRoute] int id, [FromBody] ComentarioCreacionDTO comentarioCreacionDTO)
         {
             var existeLibro = await context.Libros.AnyAsync(x => x.Id == libroId);
@@ -141,6 +164,12 @@ namespace WebApiAutores.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Borrar un comentario (Solo los usuarios autenticados pueden borrar, y solo pueden borrar sus propios comentarios)
+        /// </summary>
+        /// <param name="libroId">Id del libro que tiene el comentario</param>
+        /// <param name="id">Id del comentario</param>
+        /// <returns></returns>
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete([FromRoute] int libroId, [FromRoute] int id)
         {

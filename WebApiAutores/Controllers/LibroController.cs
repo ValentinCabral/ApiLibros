@@ -24,13 +24,12 @@ namespace WebApiAutores.Controllers
             this.mapper = mapper;
         }
 
+        /// <summary>
+        /// Listado de todos los libros
+        /// </summary>
+        /// <returns>Lista de libros</returns>
         [HttpGet]
         [AllowAnonymous]
-        /*
-         * Este método permite obtener una lista de todos los libros
-         * Los devuelve en forma LibroDTO (Titulo, UrlPDF, Autores)
-         * A los autores los devuelve en forma AutorDTO (Id, Nombre, Apellido)
-        */
         public async Task<ActionResult<List<LibroDTO>>> Get()
         {
             var libros = await context.Libros
@@ -42,6 +41,11 @@ namespace WebApiAutores.Controllers
             return mapper.Map<List<LibroDTO>>(libros);  // Mapeo desde Libro hasta LibroDTO y retorno
         }
 
+        /// <summary>
+        /// Obtener un libro por su Id
+        /// </summary>
+        /// <param name="id">Id del libro</param>
+        /// <returns>Libro</returns>
         [HttpGet("{id:int}", Name = "ObtenerLibroPorId")]
         [AllowAnonymous]
         public async Task<ActionResult<LibroDTO>> GetPorId([FromRoute] int id)
@@ -57,12 +61,13 @@ namespace WebApiAutores.Controllers
             return mapper.Map<LibroDTO>(libro);
         }
 
+        /// <summary>
+        /// Buscar libros de un autor
+        /// </summary>
+        /// <param name="autorId">Id del autor</param>
+        /// <returns>Los libros de ese autor</returns>
         [HttpGet("buscar-por-autor/{autorId:int}")]
         [AllowAnonymous]
-        /*
-         * Este método permite buscar los libros de un autor en particular
-         * dado su Id
-        */
         public async Task<ActionResult<List<LibroMostrarEnAutoresDTO>>> GetPorAutoresId([FromRoute] int autorId)
         {
 
@@ -88,6 +93,11 @@ namespace WebApiAutores.Controllers
             return mapper.Map<List<LibroMostrarEnAutoresDTO>>(libros);
         }
 
+        /// <summary>
+        /// Buscar libros de uno o varios autores según su nombre
+        /// </summary>
+        /// <param name="nombre">Nombre del autor</param>
+        /// <returns>Listado de libros</returns>
         [HttpGet("buscar-por-autor/{nombre}")]
         [AllowAnonymous]
         public async Task<ActionResult<List<List<LibroMostrarEnAutoresDTO>>>> GetPorAutoresNombre([FromRoute] string nombre)
@@ -121,6 +131,11 @@ namespace WebApiAutores.Controllers
             return mapper.Map<List<List<LibroMostrarEnAutoresDTO>>>(libros);
         }
 
+        /// <summary>
+        /// Buscar libros según su titulo
+        /// </summary>
+        /// <param name="titulo">String a buscar en los titulos de los libros</param>
+        /// <returns>Listado de libros</returns>
         [HttpGet("{titulo}")]
         [AllowAnonymous]
         public async Task<ActionResult<List<LibroDTO>>> BuscarPorTitulo([FromRoute] string titulo)
@@ -138,12 +153,12 @@ namespace WebApiAutores.Controllers
             return mapper.Map<List<LibroDTO>>(libros);
         }
 
+        /// <summary>
+        /// Crear un nuevo libro
+        /// </summary>
+        /// <param name="libroDTO">Datos del libro</param>
+        /// <returns></returns>
         [HttpPost]
-        /*
-         * Este método permite crear un nuevo libro
-         * Recibe un libro en forma de LibroCracionDTO (Titulo, URLPDF, AutoresIds)
-         * Y comprueba que existan los autores con los ids recibidos .
-        */
         public async Task<ActionResult> Post([FromBody] LibroCreacionDTO libroDTO)
         {
             if (libroDTO.AutoresIds is null || libroDTO.AutoresIds.Count == 0)  // Si no me pasan ningún autor
@@ -165,12 +180,14 @@ namespace WebApiAutores.Controllers
             return CreatedAtRoute("ObtenerLibroPorId", new { id = libro.Id}, libroDTO);
         }
 
+        /// <summary>
+        /// Actualizar un libro ya existente
+        /// </summary>
+        /// <param name="libroCreacionDTO">Nuevos datos del libro</param>
+        /// <param name="id">Id del libro</param>
+        /// <returns></returns>
         [HttpPut("{id:int}")]
-        /*
-         * Este método permite actualizar un Libro ya existente
-         * Recibe un LibroActualizacionDTO (Id, Titulo, URLPDF, AutorId) y un id desde la Url
-         * Comprueba si existe un libro con ese Id, y que el Id del nuevo libro coincida con el de la url
-        */
+
         public async Task<ActionResult> Put([FromBody] LibroCreacionDTO libroCreacionDTO,[FromRoute] int id)
         {
             var libro = await context.Libros
@@ -186,11 +203,12 @@ namespace WebApiAutores.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Eliminar un libro
+        /// </summary>
+        /// <param name="id">Id del libro</param>
+        /// <returns></returns>
         [HttpDelete("{id:int}")]
-        /*
-         * Este método permite Borrar un Libro dado un Id
-         * Comprueba que exista algún libro con ese Id, y si es asi lo elimina
-        */
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
             var existe = await context.Libros.AnyAsync(x => x.Id == id); // Booleano, existe algún libro con ese Id
@@ -203,6 +221,12 @@ namespace WebApiAutores.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Actualizar un dato especifico de un libro
+        /// </summary>
+        /// <param name="id">Id del libro</param>
+        /// <param name="patchDocument">Source del campo, operacion (replace) y nuevo valor</param>
+        /// <returns></returns>
         [HttpPatch("{id:int}")]
         public async Task<ActionResult> Patch([FromRoute] int id, JsonPatchDocument<LibroCreacionDTO> patchDocument)
         {

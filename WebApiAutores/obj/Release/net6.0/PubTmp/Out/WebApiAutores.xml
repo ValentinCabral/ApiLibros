@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApiAutores</name>
+    </assembly>
+    <members>
+        <member name="M:WebApiAutores.Controllers.AutorController.GetListado(System.Int32,System.Int32)">
+            <summary>
+            Este método permite obtener un listado de todos los Autores
+            </summary>
+            <param name="ordenarPor">1: Nombre, 2: Apellido, 3: Fecha de nacimiento, Otros: Id</param>
+            <param name="tipoOrden">1: Ascendente, 2: Descendente</param>
+            <returns>Listado de autores ordenados segun lo especificado</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.AutorController.GetPorId(System.Int32)">
+            <summary>
+            Buscar un Autor por su Id
+            </summary>
+            <param name="id">Id del autor a buscar</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.AutorController.GetPorNombre(System.String)">
+            <summary>
+            Buscar un Autor por su nombre
+            </summary>
+            <param name="nombre">Nombre que se quiere buscar entre los autores</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.AutorController.GetPorApellido(System.String)">
+            <summary>
+            Buscar un Autor por su apellido
+            </summary>
+            <param name="apellido">Apellido a buscar entre los autores</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.AutorController.GetPorNombreOrApellido(System.String)">
+            <summary>
+            Buscar cualquier Autor que contenga el string recibido en su nombre o en su apellido
+            </summary>
+            <param name="apellidoONombre">Palabra a buscar en el nombre o apellido de los autores</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.AutorController.Post(WebApiAutores.DTOs.AutorCreacionDTO)">
+            <summary>
+            Permite crear un nuevo Autor
+            </summary>
+            <param name="autorDTO">Datos del Autor</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.AutorController.Put(WebApiAutores.DTOs.AutorCreacionDTO,System.Int32)">
+            <summary>
+            Actualizar los datos de un Autor ya existente
+            </summary>
+            <param name="autorCreacionDTO">Id, Nombre y Apellido del Autor</param>
+            <param name="id">Busca el autor con ese Id y verifica que sea el mismo que se recibe</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.AutorController.Delete(System.Int32)">
+            <summary>
+            Borrar un Autor
+            </summary>
+            <param name="id">Id del Autor a borrar</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.AutorController.Patch(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{WebApiAutores.DTOs.AutorCreacionDTO})">
+            <summary>
+            Actualizar parcialmente,es decir un campo especifico, de un Autor
+            </summary>
+            <param name="id">Id del Autor a actualizar</param>
+            <param name="patchDocument">source del Campo, operacion (replace) y valor a actualizar</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.ComentariosController.Get(System.Int32)">
+            <summary>
+            Acceder a todos los comentarios de un libro
+            </summary>
+            <param name="libroId">Id del libro que tiene los comentarios</param>
+            <returns>Listado de comentarios</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.ComentariosController.GetPorId(System.Int32,System.Int32)">
+            <summary>
+            Buscar un comentario por su ID
+            </summary>
+            <param name="libroId">Id del libro que tiene el comentario</param>
+            <param name="id">Id del comentario</param>
+            <returns>Un comentario</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.ComentariosController.GetPorUsuario(System.Int32)">
+            <summary>
+            Buscar los comentarios de un usuario especifico
+            </summary>
+            <param name="libroId">id del libro que tiene los comentarios</param>
+            <returns>Lista de comentarios del usuario en ese libro</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.ComentariosController.Post(System.Int32,WebApiAutores.DTOs.ComentarioCreacionDTO)">
+            <summary>
+            Crear un nuevo comentario
+            </summary>
+            <param name="libroId">Id del libro que se quiere comentar</param>
+            <param name="comentarioCreacionDTO">Texto del comentario</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.ComentariosController.Put(System.Int32,System.Int32,WebApiAutores.DTOs.ComentarioCreacionDTO)">
+            <summary>
+            Actualizar un comentario especifico
+            </summary>
+            <param name="libroId">Id del libro que tiene el comentario</param>
+            <param name="id">Id del comentario</param>
+            <param name="comentarioCreacionDTO">Nuevo contenido del comentario</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.ComentariosController.Delete(System.Int32,System.Int32)">
+            <summary>
+            Borrar un comentario (Solo los usuarios autenticados pueden borrar, y solo pueden borrar sus propios comentarios)
+            </summary>
+            <param name="libroId">Id del libro que tiene el comentario</param>
+            <param name="id">Id del comentario</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.CuentasController.Registrar(WebApiAutores.Entidades.CredencialesUsuario)">
+            <summary>
+            Este endpoint permite registar un nuevo usuario en la aplicación
+            </summary>
+            <param name="credencialesUsuario">Recibe como parametro un Email y un Password</param>
+            <returns>Token (JWT) y fecha de expiración del nuevo usuario</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.CuentasController.Login(WebApiAutores.Entidades.CredencialesUsuario)">
+            <summary>
+            Loguearse en la aplicación
+            </summary>
+            <param name="credencialesUsuario">Email y Password del usuario</param>
+            <returns>Token (JWT) y fecha de expiración del mismo</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.CuentasController.HacerAdmin(WebApiAutores.DTOs.EditarAdminDTO)">
+            <summary>
+            Hacer admin a un usuario
+            </summary>
+            <param name="editarAdminDTO">Email del usuario</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.CuentasController.RemoverAdmin(WebApiAutores.DTOs.EditarAdminDTO)">
+            <summary>
+            Quitar el Admin a un usuario
+            </summary>
+            <param name="editarAdminDTO">Email del usuario</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.CuentasController.ConstruirToken(WebApiAutores.Entidades.CredencialesUsuario)">
+            <summary>
+            Este método permite construir una nueva RespuestaAutenticacion con su JWT(Token) y fecha de expiración
+            </summary>
+            <param name="credencialesUsuario">Email y password</param>
+            <returns>Token y fecha de expiración</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.Get">
+            <summary>
+            Listado de todos los libros
+            </summary>
+            <returns>Lista de libros</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.GetPorId(System.Int32)">
+            <summary>
+            Obtener un libro por su Id
+            </summary>
+            <param name="id">Id del libro</param>
+            <returns>Libro</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.GetPorAutoresId(System.Int32)">
+            <summary>
+            Buscar libros de un autor
+            </summary>
+            <param name="autorId">Id del autor</param>
+            <returns>Los libros de ese autor</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.GetPorAutoresNombre(System.String)">
+            <summary>
+            Buscar libros de uno o varios autores según su nombre
+            </summary>
+            <param name="nombre">Nombre del autor</param>
+            <returns>Listado de libros</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.BuscarPorTitulo(System.String)">
+            <summary>
+            Buscar libros según su titulo
+            </summary>
+            <param name="titulo">String a buscar en los titulos de los libros</param>
+            <returns>Listado de libros</returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.Post(WebApiAutores.DTOs.LibroCreacionDTO)">
+            <summary>
+            Crear un nuevo libro
+            </summary>
+            <param name="libroDTO">Datos del libro</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.Put(WebApiAutores.DTOs.LibroCreacionDTO,System.Int32)">
+            <summary>
+            Actualizar un libro ya existente
+            </summary>
+            <param name="libroCreacionDTO">Nuevos datos del libro</param>
+            <param name="id">Id del libro</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.Delete(System.Int32)">
+            <summary>
+            Eliminar un libro
+            </summary>
+            <param name="id">Id del libro</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiAutores.Controllers.LibroController.Patch(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{WebApiAutores.DTOs.LibroCreacionDTO})">
+            <summary>
+            Actualizar un dato especifico de un libro
+            </summary>
+            <param name="id">Id del libro</param>
+            <param name="patchDocument">Source del campo, operacion (replace) y nuevo valor</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
