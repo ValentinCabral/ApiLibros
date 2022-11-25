@@ -49,7 +49,7 @@ namespace WebApiAutores.Controllers
 
 
             // Si no tiene ningún libro la biblioteca es nula
-            if (biblioteca.Libros.Count() == 0)
+            if (biblioteca.Libros.Count() == 0 || biblioteca is null)
             {
                 return NotFound();
             }

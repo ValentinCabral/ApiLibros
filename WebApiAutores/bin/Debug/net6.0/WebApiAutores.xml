@@ -97,6 +97,13 @@
             <param name="idLibro">Id del libro a borrar</param>
             <returns></returns>
         </member>
+        <member name="M:WebApiAutores.Controllers.BibliotecasController.BorrarLibros(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Permite borrar una lista de libros de la biblioteca del usuario
+            </summary>
+            <param name="idsLibros">Lista con los ids de los libros a borrar</param>
+            <returns></returns>
+        </member>
         <member name="M:WebApiAutores.Controllers.ComentariosController.Get(System.Int32)">
             <summary>
             Acceder a todos los comentarios de un libro
@@ -144,7 +151,7 @@
             <param name="id">Id del comentario</param>
             <returns></returns>
         </member>
-        <member name="M:WebApiAutores.Controllers.CuentasController.Registrar(WebApiAutores.Entidades.CredencialesUsuario)">
+        <member name="M:WebApiAutores.Controllers.CuentasController.Registrar(Microsoft.AspNetCore.Http.FormCollection)">
             <summary>
             Este endpoint permite registar un nuevo usuario en la aplicación
             </summary>
