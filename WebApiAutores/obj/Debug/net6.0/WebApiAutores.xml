@@ -151,7 +151,7 @@
             <param name="id">Id del comentario</param>
             <returns></returns>
         </member>
-        <member name="M:WebApiAutores.Controllers.CuentasController.Registrar(Microsoft.AspNetCore.Http.FormCollection)">
+        <member name="M:WebApiAutores.Controllers.CuentasController.Registrar(WebApiAutores.Entidades.CredencialesUsuario)">
             <summary>
             Este endpoint permite registar un nuevo usuario en la aplicación
             </summary>

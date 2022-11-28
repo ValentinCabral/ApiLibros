@@ -151,6 +151,12 @@
             <param name="id">Id del comentario</param>
             <returns></returns>
         </member>
+        <member name="M:WebApiAutores.Controllers.CuentasController.DatosDelUsuario">
+            <summary>
+            Devuelve los datos del usuario que esta logueado
+            </summary>
+            <returns>Email del usuario y booleano(es admin o no es admin)</returns>
+        </member>
         <member name="M:WebApiAutores.Controllers.CuentasController.Registrar(WebApiAutores.Entidades.CredencialesUsuario)">
             <summary>
             Este endpoint permite registar un nuevo usuario en la aplicación

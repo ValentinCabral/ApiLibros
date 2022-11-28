@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,6 +24,27 @@ namespace WebApiAutores.Controllers
             this.configuration = configuration;
             this.userManager = userManager;
             this.signInManager = signInManager;
+        }
+
+
+        /// <summary>
+        /// Devuelve los datos del usuario que esta logueado
+        /// </summary>
+        /// <returns>Email del usuario y booleano(es admin o no es admin)</returns>
+        [HttpGet("datosusuario")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<DatosUsuario>> DatosDelUsuario()
+        {
+            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+            var email = emailClaim.Value;
+
+            var esAdminClaim = HttpContext.User.Claims.Where(claim => claim.Type == "esAdmin").FirstOrDefault();
+
+            if(esAdminClaim is null)
+                return new DatosUsuario() { Email = email, esAdmin = false };
+
+
+            return new DatosUsuario() { Email = email, esAdmin = true };
         }
 
         /// <summary>
