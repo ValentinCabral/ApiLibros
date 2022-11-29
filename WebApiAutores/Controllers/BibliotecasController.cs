@@ -31,7 +31,7 @@ namespace WebApiAutores.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<BibliotecaDTO>> VerMisLibros()
+        public async Task<ActionResult<List<LibroDTO>>> VerMisLibros()
         {
 
             // Obtengo el email del usuario a partir de los claims del JWT
@@ -55,7 +55,7 @@ namespace WebApiAutores.Controllers
             }
 
             // Si tiene libros mapeo la biblioteca para mostrar solo los libros de la misma
-            return mapper.Map<BibliotecaDTO>(biblioteca);
+            return mapper.Map<List<LibroDTO>>(biblioteca.Libros);
         }
 
         /// <summary>
