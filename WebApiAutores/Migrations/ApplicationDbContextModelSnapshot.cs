@@ -323,9 +323,6 @@ namespace WebApiAutores.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("BibliotecaId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("FechaPublicacion")
                         .HasColumnType("datetime2");
 
@@ -346,9 +343,22 @@ namespace WebApiAutores.Migrations
 
                     b.HasKey("Id");
 
+                    b.ToTable("Libros");
+                });
+
+            modelBuilder.Entity("WebApiAutores.Entidades.LibroBibliotecas", b =>
+                {
+                    b.Property<int>("LibroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BibliotecaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LibroId", "BibliotecaId");
+
                     b.HasIndex("BibliotecaId");
 
-                    b.ToTable("Libros");
+                    b.ToTable("LibroBibliotecas");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -447,11 +457,23 @@ namespace WebApiAutores.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("WebApiAutores.Entidades.Libro", b =>
+            modelBuilder.Entity("WebApiAutores.Entidades.LibroBibliotecas", b =>
                 {
-                    b.HasOne("WebApiAutores.Entidades.Biblioteca", null)
-                        .WithMany("Libros")
-                        .HasForeignKey("BibliotecaId");
+                    b.HasOne("WebApiAutores.Entidades.Biblioteca", "Biblioteca")
+                        .WithMany("LibrosBibliotecas")
+                        .HasForeignKey("BibliotecaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApiAutores.Entidades.Libro", "Libro")
+                        .WithMany("LibrosBibliotecas")
+                        .HasForeignKey("LibroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Biblioteca");
+
+                    b.Navigation("Libro");
                 });
 
             modelBuilder.Entity("WebApiAutores.Entidades.Autor", b =>
@@ -461,12 +483,14 @@ namespace WebApiAutores.Migrations
 
             modelBuilder.Entity("WebApiAutores.Entidades.Biblioteca", b =>
                 {
-                    b.Navigation("Libros");
+                    b.Navigation("LibrosBibliotecas");
                 });
 
             modelBuilder.Entity("WebApiAutores.Entidades.Libro", b =>
                 {
                     b.Navigation("AutoresLibros");
+
+                    b.Navigation("LibrosBibliotecas");
                 });
 #pragma warning restore 612, 618
         }

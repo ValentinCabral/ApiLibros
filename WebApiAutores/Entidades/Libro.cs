@@ -17,5 +17,6 @@ namespace WebApiAutores.Entidades
         public DateTime FechaPublicacion { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public List<AutorLibro> AutoresLibros { get; set; }
+        public List<LibroBibliotecas> LibrosBibliotecas { get; set; }
     }
 }

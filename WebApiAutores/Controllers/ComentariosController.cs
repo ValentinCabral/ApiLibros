@@ -154,7 +154,15 @@ namespace WebApiAutores.Controllers
             if (!existeLibro) // No existe ningún libro con ese Id
                 return NotFound();
 
-            var existeComentario = await context.Comentarios.AnyAsync(x => x.Id == id);
+            var emailClaim = HttpContext.User.Claims.Where(x => x.Type == "email").FirstOrDefault();
+            var email = emailClaim.Value;
+
+            var usuario = await userManager.FindByEmailAsync(email);
+            var usuarioId = usuario.Id;
+
+            var existeComentario = await context.Comentarios
+                .Where(x => x.UsuarioId == usuarioId)
+                .AnyAsync(x => x.Id == id);
             if (!existeComentario)  // No existe ningún comentario con ese Id
                 return NotFound();
 
@@ -162,6 +170,7 @@ namespace WebApiAutores.Controllers
             
             // Asigno los campos Id y LibroId en comentario ya que ComentarioCreacionDTO no tiene estos campos 
             comentario.Id = id;
+            comentario.UsuarioId = usuarioId;
             comentario.LibroId = libroId;
 
             context.Update(comentario); // Actualizo

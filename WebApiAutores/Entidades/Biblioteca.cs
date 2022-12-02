@@ -7,6 +7,6 @@ namespace WebApiAutores.Entidades
         public int Id { get; set; }
         public string UsuarioId { get; set; }
         public IdentityUser Usuario { get; set; }
-        public List<Libro> Libros { get; set; }
+        public List<LibroBibliotecas> LibrosBibliotecas { get; set; }
     }
 }

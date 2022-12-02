@@ -83,25 +83,11 @@
             <param name="libroId">Id del libro a agregar</param>
             <returns></returns>
         </member>
-        <member name="M:WebApiAutores.Controllers.BibliotecasController.AgregarLibros(System.Collections.Generic.List{System.Int32})">
-            <summary>
-            Permite agregar varios libros a la biblioteca a la vez
-            </summary>
-            <param name="idsLibros">Lista(arreglo) de los ids de los libros a agregar</param>
-            <returns></returns>
-        </member>
         <member name="M:WebApiAutores.Controllers.BibliotecasController.Delete(System.Int32)">
             <summary>
             Permite borrar un libro de la biblioteca del usuario
             </summary>
             <param name="idLibro">Id del libro a borrar</param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApiAutores.Controllers.BibliotecasController.BorrarLibros(System.Collections.Generic.List{System.Int32})">
-            <summary>
-            Permite borrar una lista de libros de la biblioteca del usuario
-            </summary>
-            <param name="idsLibros">Lista con los ids de los libros a borrar</param>
             <returns></returns>
         </member>
         <member name="M:WebApiAutores.Controllers.ComentariosController.Get(System.Int32)">

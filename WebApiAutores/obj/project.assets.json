@@ -2662,11 +2662,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\vcabral\\Desktop\\LibrosApi\\WebApiAutores\\WebApiAutores.csproj",
+      "projectUniqueName": "C:\\Users\\vcabral\\Desktop\\ApiLibros\\WebApiAutores\\WebApiAutores.csproj",
       "projectName": "WebApiAutores",
-      "projectPath": "C:\\Users\\vcabral\\Desktop\\LibrosApi\\WebApiAutores\\WebApiAutores.csproj",
+      "projectPath": "C:\\Users\\vcabral\\Desktop\\ApiLibros\\WebApiAutores\\WebApiAutores.csproj",
       "packagesPath": "C:\\Users\\vcabral\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\vcabral\\Desktop\\LibrosApi\\WebApiAutores\\obj\\",
+      "outputPath": "C:\\Users\\vcabral\\Desktop\\ApiLibros\\WebApiAutores\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
